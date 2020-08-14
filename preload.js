@@ -64,11 +64,17 @@ setDesktop = path => {
     if (utools.isMacOs()) {
         exec(`osascript -e 'tell application "System Events" to set picture of desktop 1 to "${path}"'`, (err, stdout, stderr) => {
             err && utools.showNotification(stderr)
+            if (!err) {
+                toastr.success("壁纸下载成功");
+            }
         })
     } else if (utools.isWindows()) {
         var script = GetFilePath('setDesktop.cs')
         exec(`powershell -NoProfile -Command "Add-Type -Path ${script}; [Wallpaper.Setter]::SetWallpaper('${path}', 'Stretch')"`, (err, stdout, stderr) => {
             err && utools.showNotification(stderr)
+            if (!err) {
+                toastr.success("壁纸下载成功");
+            }
         })
     } else {
         utools.showNotification('不支持 Linux')

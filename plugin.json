@@ -6,7 +6,7 @@
 	"main": "index.html",
 	"preload": "preload.js",
 	"logo": "static/images/bing.jpg",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"features": [{
 		"code": "bing",
 		"explain": "每天更新bing壁纸",

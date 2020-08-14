@@ -32,18 +32,16 @@ downloadWallPaper = async (filename) => {
         defaultPath: filename
     })
     window.saveImg(path, window.toBuffer(img))
-    showLayerMsg("下载成功！");
+    toastr.success("下载成功！");
 }
 
 // 设为壁纸
 setWallPaper = async (filename) => {
     var img = await downloadImg(filename)
-
     if (img) {
         var path = window.joinpath(utools.getPath('temp'), filename)
         window.saveImg(path, window.toBuffer(img))
         setDesktop(path)
-        showLayerMsg("设为壁纸成功！");
     }
 }
 
@@ -51,42 +49,6 @@ setWallPaper = async (filename) => {
 showWallPaper = (url) => {
     utools.shellOpenExternal(`http://img.elephantnote.com/static/images/${url}`)
 }
-
-showLayerMsg = (msg) => {
-    // 弹出窗
-    let option = {
-        popupTime: 2,
-        hook: {
-            initStart: function () {
-                // 检查之前老旧实例如果存在则销毁
-                if (document.querySelector('#modal-layer-container'))
-                    ModalLayer.removeAll();
-            }
-        },
-        displayProgressBar: true,
-        displayProgressBarPos: 'top',
-        displayProgressBarColor: 'red',
-        content: `<i class="fas fa-check" style="color: deepskyblue"></i>${msg}!`,
-    };
-
-    ModalLayer.msg(option);
-}
-// let loading = false
-// let url = "http://img.elephantnote.com:8080/img/bing/?page=10&limit=2"
-// $.get(url, function (data) {
-//     loading = true
-//     append_html = "";
-//     data.data.forEach((u) => {
-//         append_html += "<li><img onmouseenter=\"bigImg(this)\" src='http://img.elephantnote.com:8080/static/images/bizhi.jpg' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>"
-//         // alert(1)
-//     })
-//     // alert(2)
-//     $("#content ul").append(append_html);
-//     // alert(3)
-//     // setTimeout(function () {
-//     //     loading = false
-//     // }, 1000);
-// })
 
 var $waterfall = $("#waterfall");
 // 得到模板字符串
@@ -138,6 +100,7 @@ getJsonandRender = (page) => {
             });
         });
         lock = false;
+        $(".load").hide();
     });
 };
 
@@ -149,10 +112,9 @@ $(window).scroll(function () {
     // console.log(lock)
     if (lock) return;
     // 当滚动到快到底的时候 再次发ajax请求
-    // console.log($(window).scrollTop());
-    // console.log($(document).height() - $(window).height());
     var rate = $(window).scrollTop() / ($(document).height() - $(window).height());
     if (rate >= 0.95) {
+        $(".load").show();
         page++;
         lock = true;
         getJsonandRender(page);
@@ -165,22 +127,22 @@ $(window).scroll(function () {
 
 
 // 禁用网页右键 f12
-// document.oncontextmenu = function () {
-//     return false;
-// }
+document.oncontextmenu = function () {
+    return false;
+}
 
-// document.onselectstart = function () {
-//     return false;
-// }
+document.onselectstart = function () {
+    return false;
+}
 
-// document.oncopy = function () {
-//     return false;
-// }
+document.oncopy = function () {
+    return false;
+}
 
-// document.onkeydown = function () {
-//     if (window.event && window.event.keyCode == 123) {
-//         event.keyCode = 0;
-//         event.returnValue = false;
-//         return false;
-//     }
-// };
+document.onkeydown = function () {
+    if (window.event && window.event.keyCode == 123) {
+        event.keyCode = 0;
+        event.returnValue = false;
+        return false;
+    }
+};
